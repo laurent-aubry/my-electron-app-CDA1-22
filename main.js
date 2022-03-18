@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 
 // include the Node.js 'path' module at the top of your file
 const path = require('path')
@@ -27,6 +27,8 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
+  !isMac && mainWindow.on('closed', () => app.quit());
+
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainMenu);
 })
@@ -46,6 +48,10 @@ function createAddWindow() {
   })
   addWindow.loadURL(`file://${__dirname}/add.html`);
 }
+
+ipcMain.on("todo:add", (event, todo) => {
+  mainWindow.webContents.send("todo:add", todo);
+});
 
 const menuTemplate = [
   // { role: 'appMenu' }
