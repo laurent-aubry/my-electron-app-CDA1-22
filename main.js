@@ -8,15 +8,16 @@ const isMac = process.platform === 'darwin'
 let mainWindow;
 let addWindow;
 let tray;
+const initialData = [{todo: "task to do"}, {todo: "task 2 to do"}];
 
 const createWindow = () => {
   mainWindow = new BrowserWindow
     (
       {
         height: 500,
-        width: 300,
+        width: 700,
         frame: true, // désactive la Status Bar en haut de la fenêtre
-        resizable: false, // fige la taille de la fenêtre ainsi que son emplacement
+        resizable: true, // fige la taille de la fenêtre ainsi que son emplacement
         show: false, // désactive l'ouverture par défaut de la fenêtre principale et n'active que l'icône TRAY
         webPreferences: {
           preload: path.join(__dirname, 'preload.js')
@@ -25,6 +26,9 @@ const createWindow = () => {
       })
 
   mainWindow.loadFile('index.html')
+  mainWindow.on('ready-to-show', () => {
+    mainWindow.webContents.send("initData", initialData);
+  })
 }
 
 const onClick = (event, bounds) => {
@@ -58,10 +62,11 @@ const onRightClick = () => {
 }
 
 app.whenReady().then(() => {
+  
   createWindow()
- 
+  
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
   })
 
   !isMac && mainWindow.on('closed', () => app.quit());
@@ -79,11 +84,16 @@ app.whenReady().then(() => {
 
   tray.on('click', onClick.bind(tray));
   tray.on('right-click', onRightClick.bind(tray)) //bind(this) permet de passer le contexte de l'objet à la fonction lorsqu'elle sera appelé. Actuellement ce n'est qu'un poiteur qui enregistre la fonction
+
 })
 
 app.on('window-all-closed', () => {
   if (!isMac) app.quit()
 })
+
+
+
+
 
 function createAddWindow() {
   addWindow = new BrowserWindow({
@@ -91,7 +101,7 @@ function createAddWindow() {
     height: 200,
     title: "Ajouter une nouvelle tâche",
     // frame: false, // désactive la Status Bar en haut de la fenêtre
-    resizable: true,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
