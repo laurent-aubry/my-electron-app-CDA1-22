@@ -98,11 +98,11 @@ app.on('window-all-closed', () => {
 
 function createAddWindow() {
   addWindow = new BrowserWindow({
-    width: 300,
-    height: 200,
+    width: 400,
+    height: 500,
     title: "Ajouter une nouvelle tâche",
     // frame: false, // désactive la Status Bar en haut de la fenêtre
-    // resizable: false,
+    resizable: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
