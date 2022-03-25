@@ -8,7 +8,8 @@ const isMac = process.platform === 'darwin'
 let mainWindow;
 let addWindow;
 let tray;
-const initialData = [{todo: "task to do"}, {todo: "task 2 to do"}];
+//const initialData = [{todo: "task to do"}, {todo: "task 2 to do"}];
+const initialData = [{description: "task to do", complement: "complement", echeance: "23/05/23", responsibleFor: "toto"}, {description: "task 2 to do"}];
 
 const createWindow = () => {
   mainWindow = new BrowserWindow
