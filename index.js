@@ -11,8 +11,9 @@ api.receive('initData', initialData => {
 })
 
 api.receive('todo:add', todo => {
+    console.log("todo : " + todo);
     const li = document.createElement('li');
-    const text = document.createTextNode(todo);
+    const text = document.createTextNode(todo[0].description + " - " + todo[0].complement);
 
     // debugger;
 

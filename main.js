@@ -101,7 +101,7 @@ function createAddWindow() {
     height: 200,
     title: "Ajouter une nouvelle tâche",
     // frame: false, // désactive la Status Bar en haut de la fenêtre
-    resizable: false,
+    // resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
